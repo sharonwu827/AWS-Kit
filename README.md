@@ -58,3 +58,28 @@ Amazon S3 allows people to store objects (files) in “buckets” (directories)
 ## Amazon SageMaker
 - Fully managed service for developers / data scientists to build ML models 
 - ypically, difficult to do all the processes in one place + provision servers
+
+
+## IAM 
+The main concepts in IAM are:
+- **Users:** Users are entities that represent a person or a service/application ( like in the case of Service Accounts)
+- **Groups**: Groups are **collections of users and have policies attached to them**. They help organise users (into departments or functions - like developers or admins) and **simplify access management at scale,** because when you need to add or remove policies that change is automatically applied to all users in that group.
+- **Roles:** Roles can be assumed by trusted entities - a user or a service can assume a role to obtain temporary security credentials. similar to an IAM user, but is not associated with a specific person.
+- **Access Policies**: a JSON document define permissions.
+
+```json
+{
+   "Version": "2012-10-17",
+   "id": "S3-permission" //optional, an identifier for the policy
+   "Statement": [
+     {
+       "Sid": "DenyS3AccessWithNoMFA", //optional, an identifier for the statement
+       "Effect": "Deny", // or "Allow"
+       "Principal": "*", // account or user or role to which this policy applied to
+       "Action": "s3:*", // list of actions this policy allows or denies
+       "Resource": "arn:aws:s3:::this-is-an-example-s3-bucket-name/example-directory/*",
+       "Condition": { "Null": { "aws:MultiFactorAuthAge": true }}  // optional, when the policy should be applied
+     }
+   ]
+}
+```
